@@ -20,10 +20,10 @@ app.use(express.json({
 app.use(bodyParser.json());
 
 // When recieving data through URL, url encodes data in different format, so while receiving it, we need to tell app, the it is url encoded
-// app.use(express.urlencoded({
-//     extended: true,
-//     limit: "20kb" 
-// }));
+app.use(express.urlencoded({
+    extended: true,
+    limit: "20kb" 
+}));
 
 
 app.get("/", (req, res) => {
@@ -31,7 +31,8 @@ app.get("/", (req, res) => {
     .send("Working fine");
 });
 
+// ------------ Routes -------------
+import responseLangflowChat from "./routes/responseLangflow.route.js";
 
-// ------------ Routes -----------------
-
+app.use("/api/v1/", responseLangflowChat);
 export default app;
