@@ -45,7 +45,7 @@ const ChatMain = () => {
                 <div className="flex-1 overflow-y-auto p-4 space-y-4">
                     {history.map((message, index) => (
                         <div key={index} className={`${message.sender === 'user' ? 'flex justify-end' : ''}`}>
-                            <div className={`p-2 rounded-md w-2/3 ${message.sender === 'user' ? 'bg-gray-700 text-right' : 'bg-gray-800'}`}>
+                            <div className={`p-2 rounded-md sm:w-2/3 ${message.sender === 'user' ? 'bg-gray-700 text-right' : 'bg-gray-800'}`}>
                                 <p><strong>{message.sender === 'user' ? 'You' : 'Langflow'}:</strong></p>
                                 {/* Render HTML with dangerouslySetInnerHTML */}
                                 <p dangerouslySetInnerHTML={{ __html: message.text }} />
