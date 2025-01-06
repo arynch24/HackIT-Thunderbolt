@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { addMessage } from '../redux/chatSlice';
 import { fetchLangflowResponse } from '../utils/langflow';
 import { useSelector } from 'react-redux';
+import MarkdownToText from '../utils/MarkdownToText';
 
 const ChatMain = () => {
     const [input, setInput] = useState('');
@@ -20,7 +21,8 @@ const ChatMain = () => {
 
             try {
                 const response = await fetchLangflowResponse(input);
-                dispatch(addMessage({ sender: 'langflow', text: response }));
+
+                dispatch(addMessage({ sender: 'langflow', text: <MarkdownToText markdown="response"/> }));
             } catch (error) {
                 dispatch(addMessage({ sender: 'langflow', text: 'Error fetching response.' }));
             }
