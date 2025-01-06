@@ -23,16 +23,11 @@ const ChatMain = () => {
                 // Convert Markdown response to HTML
                 const html = marked.parse(response);
 
-                // Create a temporary div to extract text content
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = html;
+                // Replace newline characters with <br />
+                const formattedText = html.replace(/\n/g, '<br />');
 
-                // Get the plain text and handle newlines
-                let plainText = tempDiv.textContent || tempDiv.innerText || '';
-                plainText = plainText.replace(/\n/g, '\n'); // Make sure newlines are preserved
-
-                // Dispatch the converted text
-                dispatch(addMessage({ sender: 'langflow', text: plainText }));
+                // Dispatch the formatted response
+                dispatch(addMessage({ sender: 'langflow', text: formattedText }));
             } catch (error) {
                 dispatch(addMessage({ sender: 'langflow', text: 'Error fetching response.' }));
             }
@@ -41,7 +36,6 @@ const ChatMain = () => {
             setInput('');
         }
     };
-
 
     return (
         <div className="w-3/4 h-full p-4">
@@ -53,7 +47,8 @@ const ChatMain = () => {
                         <div key={index} className={`${message.sender === 'user' ? 'flex justify-end' : ''}`}>
                             <div className={`p-2 rounded-md w-2/3 ${message.sender === 'user' ? 'bg-gray-700 text-right' : 'bg-gray-800'}`}>
                                 <p><strong>{message.sender === 'user' ? 'You' : 'Langflow'}:</strong></p>
-                                <p>{message.text}</p>
+                                {/* Render HTML with dangerouslySetInnerHTML */}
+                                <p dangerouslySetInnerHTML={{ __html: message.text }} />
                             </div>
                         </div>
                     ))}
