@@ -20,10 +20,16 @@ const ChatMain = () => {
             try {
                 const response = await fetchLangflowResponse(input);
 
-                // Convert Markdown response to plain text
+                // Convert Markdown response to HTML
+                const html = marked.parse(response);
+
+                // Create a temporary div to extract text content
                 const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = marked.parse(response); // Convert Markdown to HTML
-                const plainText = tempDiv.textContent || tempDiv.innerText || '';
+                tempDiv.innerHTML = html;
+
+                // Get the plain text and handle newlines
+                let plainText = tempDiv.textContent || tempDiv.innerText || '';
+                plainText = plainText.replace(/\n/g, '\n'); // Make sure newlines are preserved
 
                 // Dispatch the converted text
                 dispatch(addMessage({ sender: 'langflow', text: plainText }));
@@ -35,6 +41,7 @@ const ChatMain = () => {
             setInput('');
         }
     };
+
 
     return (
         <div className="w-3/4 h-full p-4">
