@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addMessage } from '../redux/chatSlice';
 import { fetchLangflowResponse } from '../utils/langflow';
-import { useSelector } from 'react-redux';
-import MarkdownToText from '../utils/MarkdownToText';
+import { marked } from 'marked';
 
 const ChatMain = () => {
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
 
     const dispatch = useDispatch();
-
     const history = useSelector((state) => state.chat.history);
 
     const handleSend = async () => {
@@ -22,7 +20,13 @@ const ChatMain = () => {
             try {
                 const response = await fetchLangflowResponse(input);
 
-                dispatch(addMessage({ sender: 'langflow', text: <MarkdownToText markdown="response"/> }));
+                // Convert Markdown response to plain text
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = marked.parse(response); // Convert Markdown to HTML
+                const plainText = tempDiv.textContent || tempDiv.innerText || '';
+
+                // Dispatch the converted text
+                dispatch(addMessage({ sender: 'langflow', text: plainText }));
             } catch (error) {
                 dispatch(addMessage({ sender: 'langflow', text: 'Error fetching response.' }));
             }
@@ -39,16 +43,15 @@ const ChatMain = () => {
             <div className="h-[75%] overflow-y-auto border p-4 mb-4 bg-gray-900 rounded-lg">
                 <div className="flex-1 overflow-y-auto p-4 space-y-4">
                     {history.map((message, index) => (
-                        <div className={`${message.sender === 'user' ? 'flex justify-end' : ''}`}>
-                            <div key={index} className={`p-2 rounded-md w-2/3 ${message.sender === 'user' ? 'bg-gray-700 text-right' : 'bg-gray-800'}`}>
+                        <div key={index} className={`${message.sender === 'user' ? 'flex justify-end' : ''}`}>
+                            <div className={`p-2 rounded-md w-2/3 ${message.sender === 'user' ? 'bg-gray-700 text-right' : 'bg-gray-800'}`}>
                                 <p><strong>{message.sender === 'user' ? 'You' : 'Langflow'}:</strong></p>
                                 <p>{message.text}</p>
-                                {console.log("inside :",message.text)}
                             </div>
                         </div>
                     ))}
                 </div>
-            </div >
+            </div>
 
             <div className="flex">
                 <textarea
