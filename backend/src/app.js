@@ -6,7 +6,7 @@ const app = express();
 
 // Configuring CORS
 app.use(cors({
-    origin: "*", 
+    origin: "https://hackit-thunderbolt.vercel.app", 
     methods: 'GET, POST, PUT, DELETE',
     allowedHeaders: 'Content-Type, Authorization',
     credentials: true // Allow cookies
