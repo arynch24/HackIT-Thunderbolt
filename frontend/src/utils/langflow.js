@@ -1,7 +1,6 @@
 export const fetchLangflowResponse = async (inputValue) => {
     // Simulating a mock API response
-    // Replace this with the URL of your API endpoint if you have one
-    const endpoint = 'https://jsonplaceholder.typicode.com/posts'; // Mocking with JSONPlaceholder
+    const endpoint = 'https://jsonplaceholder.typicode.com/posts'; 
   
     const headers = {
       "Content-Type": "application/json",

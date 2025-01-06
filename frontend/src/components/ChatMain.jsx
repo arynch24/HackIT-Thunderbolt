@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addMessage } from '../redux/chatSlice';
-import { fetchLangflowResponse } from '../utils/langflow'; // Assuming it's the latest fetch function
+import { fetchLangflowResponse } from '../utils/langflow';
+import { useSelector } from 'react-redux';
 
 const ChatMain = () => {
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
+    
     const dispatch = useDispatch();
+
+    const history = useSelector((state) => state.chat.history);
 
     const handleSend = async () => {
         if (input.trim()) {
             // Dispatch user message to history
             dispatch(addMessage({ sender: 'user', text: input }));
-
             setLoading(true);
 
             try {
-                // Call the API to get the Langflow response (or any API you need)
                 const response = await fetchLangflowResponse(input);
-
-                // Dispatch the Langflow response to history
                 dispatch(addMessage({ sender: 'langflow', text: response }));
             } catch (error) {
                 dispatch(addMessage({ sender: 'langflow', text: 'Error fetching response.' }));
@@ -31,19 +31,33 @@ const ChatMain = () => {
     };
 
     return (
-        <div className="w-2/3 h-full p-4">
+        <div className="w-3/4 h-full p-4">
             <h1 className="text-2xl font-bold mb-4">Langflow Chat</h1>
-            <div className="h-5/6 overflow-y-auto border p-4 mb-4 bg-gray-900 rounded-lg">
-            </div>
+
+            <div className="h-[75%] overflow-y-auto border p-4 mb-4 bg-gray-900 rounded-lg">
+                <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                    {history.map((message, index) => (
+                        <div className={`${message.sender === 'user' ? 'flex justify-end' : ''}`}>
+                            <div key={index} className={`p-2 rounded-md w-2/3 ${message.sender === 'user' ? 'bg-gray-700 text-right' : 'bg-gray-800'}`}>
+                                <p><strong>{message.sender === 'user' ? 'You' : 'Langflow'}:</strong></p>
+                                <p>{message.text}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div >
+
             <div className="flex">
                 <textarea
-                    className="flex-grow p-2 border rounded bg-gray-900 text-white"
+                    className="flex-grow p-2 border rounded bg-gray-900 text-white appearance-none resize-none min-h-[3rem] max-h-[12rem] overflow-y-auto"
                     placeholder="Type your message..."
+                    rows={1}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                 />
+
                 <button
-                    className={`ml-2 px-4 py-2 text-white rounded ${loading ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"}`}
+                    className={`ml-2 px-8 py-2 text-white rounded ${loading ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"}`}
                     onClick={handleSend}
                     disabled={loading}
                 >
