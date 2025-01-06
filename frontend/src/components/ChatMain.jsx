@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 const ChatMain = () => {
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
-    
+
     const dispatch = useDispatch();
 
     const history = useSelector((state) => state.chat.history);
@@ -41,6 +41,7 @@ const ChatMain = () => {
                             <div key={index} className={`p-2 rounded-md w-2/3 ${message.sender === 'user' ? 'bg-gray-700 text-right' : 'bg-gray-800'}`}>
                                 <p><strong>{message.sender === 'user' ? 'You' : 'Langflow'}:</strong></p>
                                 <p>{message.text}</p>
+                                {console.log("inside :",message.text)}
                             </div>
                         </div>
                     ))}
