@@ -5,7 +5,7 @@ export const fetchLangflowResponse = async (inputValue) => {
     "Content-Type": "application/json",
   };
   const body = {
-    input_value: inputValue
+    msg: inputValue
   };
 
   try {
