@@ -105,11 +105,17 @@ const ChatMain = () => {
             <div className="flex w-[80%] items-center justify-between">
                 <textarea
                     style={{ backgroundColor: '#050A13', opacity: '50%' }}
-                    className="flex-grow p-2 rounded  text-gray-200 appearance-none resize-none min-h-[3rem] max-h-[12rem] overflow-y-auto"
+                    className="flex-grow p-2 rounded text-gray-200 appearance-none resize-none min-h-[3rem] max-h-[12rem] overflow-y-auto"
                     placeholder="Type your message..."
                     rows={1}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();  // Prevents a new line in the textarea
+                            handleSend();        // Trigger the send function
+                        }
+                    }}
                 />
 
                 <button
@@ -127,6 +133,7 @@ const ChatMain = () => {
                     )}
                 </button>
             </div>
+
         </div>
     );
 };
