@@ -7,7 +7,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import Spline from '@splinetool/react-spline';
 
-const ChatMain = ({ username }) => {
+const ChatMain = () => {
+    const [firstName, setFirstName] = useState('');
+    const [hasPrompted, setHasPrompted] = useState(false);
+
+    useEffect(() => {
+        if (!hasPrompted) {
+            const name = window.prompt('Please enter your first name:');
+            if (name) {
+                setFirstName(name);
+            }
+            setHasPrompted(true);
+        }
+    }, [hasPrompted]);
 
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
@@ -19,9 +31,9 @@ const ChatMain = ({ username }) => {
     const dispatch = useDispatch();
 
     // Auto-scroll to the bottom when messages update
-    
+
     const containerRef = useRef(null);
-    
+
     useEffect(() => {
         if (containerRef.current) {
             containerRef.current.scrollTop = containerRef.current.scrollHeight;
@@ -77,7 +89,7 @@ const ChatMain = ({ username }) => {
             >
                 <div className=" h-full w-[90%] p-4 ml-4 flex items-center justify-center">
                     <div class=" rounded-lg p-8 max-w-lg text-left">
-                        <h1 class="text-4xl font-bold text-blue-600 mb-4">Hi, {username || 'Guest'}! 👋</h1>
+                        <h1 class="text-4xl font-bold text-blue-600 mb-4">Hi, {firstName || 'HackIT'}! 👋</h1>
                         <p class="text-lg text-gray-200 mb-4">
                             Welcome to our <span class="font-semibold">AI-powered chatbot!</span> 🚀
                         </p>
