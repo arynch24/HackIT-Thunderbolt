@@ -4,20 +4,6 @@ import Sidebar from './components/Sidebar';
 import ChatMain from './components/ChatMain';
 
 const App = () => {
-
-//   const [firstName, setFirstName] = useState('');
-//   const [hasPrompted, setHasPrompted] = useState(false);
-
-//   useEffect(() => {
-//     if (!hasPrompted) {  
-//         const name = window.prompt('Please enter your first name:');
-//         if (name) {
-//             setFirstName(name);
-//         }
-//         setHasPrompted(true); 
-//     }
-// }, [hasPrompted]); 
-
   return (
     <div>
       <div style={{
@@ -25,7 +11,6 @@ const App = () => {
       }} className="flex h-screen bg-black text-gray-300">
         <Sidebar />
         <ChatMain/>
-        {/* <ChatMain username={firstName}/> */}
       </div>
     </div>
   );
