@@ -1,13 +1,14 @@
 import React from 'react';
+import Sidebar from './components/Sidebar';
 import ChatMain from './components/ChatMain';
 
 const App = () => {
-  return (
-    <div className="h-screen overflow-hidden flex flex-col items-center p-4 space-y-4">
-      <h1 className="text-3xl font-bold text-center">Chat Application</h1>
-      <ChatMain />
-    </div>
-  );
+    return (
+        <div className="flex h-screen">
+            <Sidebar />
+            <ChatMain />
+        </div>
+    );
 };
 
 export default App;
