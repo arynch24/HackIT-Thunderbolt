@@ -5,7 +5,6 @@
  */
 class ApiError extends Error {
 
-    let 
     
     /**
      * 
