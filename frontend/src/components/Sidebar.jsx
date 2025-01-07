@@ -9,6 +9,10 @@ const Sidebar = () => {
     const activeSessionId = useSelector((state) => state.chat.activeSessionId);
     const dispatch = useDispatch();
 
+    const stripHtmlTags = (html) => {
+        return html.replace(/<\/?[^>]+(>|$)/g, '');
+    };
+
     const handleNewChat = () => {
         dispatch(addSession());
         dispatch(setChatMode(true)); // Enable chat mode
@@ -17,11 +21,14 @@ const Sidebar = () => {
     return (
         <div className="w-1/5 h-full p-4 flex flex-col justify-between">
             <div>
-                <h2 className="text-xl font-bold mb-4">HackIT-Thunderbolt ⚡</h2>
-                <h1 className="text-md text-gray-400 mb-4">Today</h1>
+                <h2 className="text-xl font-bold mb-4" onClick={() => (dispatch(setChatMode(false)))}>HackIT-Thunderbolt ⚡</h2>
+                <h1 className="text-sm text-gray-400 mb-4">Today</h1>
                 <ul className="space-y-2">
                     {sessions.map((session) => {
-                        const latestMessage = session.messages[session.messages.length - 1]?.text;
+                        // Get the latest message in the session
+                        const latestMessage = stripHtmlTags(
+                            session.messages[session.messages.length - 1]?.text || ''
+                        );
                         return (
                             <li
                                 key={session.id}
@@ -33,7 +40,7 @@ const Sidebar = () => {
                                     dispatch(setActiveSession(session.id));
                                 }}
                             >
-                                {latestMessage ? latestMessage: 'New Chat'}
+                                {latestMessage ? latestMessage : 'New Chat'}
                             </li>
                         );
                     })}
@@ -44,6 +51,7 @@ const Sidebar = () => {
                 <button
                     className="w-full mb-4 bg-indigo-700 hover:bg-indigo-800 text-white py-2 rounded"
                     onClick={handleNewChat}
+
                 >
                     <FontAwesomeIcon icon={faPlus} />
                     &nbsp;&nbsp;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addMessageToSession } from '../redux/chatSlice';
 import { fetchLangflowResponse } from '../utils/langflow';
@@ -7,18 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import Spline from '@splinetool/react-spline';
 
-
 const ChatMain = ({ username }) => {
-
-    // const[firstName, setFirstName] = useState('');
-
-    // const handleClick = () => {
-    //     // Prompt the user for their first name
-    //     const firstName = window.prompt('Please enter your first name:');
-    //     setFirstName(firstName);
-    // };
-
-
 
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
@@ -28,6 +17,16 @@ const ChatMain = ({ username }) => {
     );
     const chatMode = useSelector((state) => state.chat.chatMode); // Get chatMode
     const dispatch = useDispatch();
+
+    // Auto-scroll to the bottom when messages update
+    
+    const containerRef = useRef(null);
+    
+    useEffect(() => {
+        if (containerRef.current) {
+            containerRef.current.scrollTop = containerRef.current.scrollHeight;
+        }
+    }, [input]);
 
     const handleSend = async () => {
         if (input.trim() && activeSessionId) {
@@ -98,8 +97,6 @@ const ChatMain = ({ username }) => {
                             transform: 'scale(0.7)',
                         }}
                         scene="https://prod.spline.design/bXgiiU7E4AYNQb5T/scene.splinecode" />
-
-
                 </div>
             </div>
         );
@@ -111,7 +108,11 @@ const ChatMain = ({ username }) => {
                 boxShadow: '0px 0px 7px 0px #091c7d',
             }}
             className="w-4/5 h-[97%] p-4 flex flex-col justify-between items-center bg-black bg-opacity-20 backdrop-blur-xl rounded-lg mt-3 mr-3">
-            <div className="h-[90%] w-[80%] overflow-auto hide-scrollbar p-4 mb-4 rounded-lg  ">
+
+
+            {/* // Render chat interface when chat mode is enabled */}
+
+            <div ref={containerRef} className="h-[90%] w-[80%] overflow-y-auto hide-scrollbar p-4 mb-4">
                 {activeSession?.messages.map((message, index) => (
                     <div
                         key={index}
@@ -124,6 +125,7 @@ const ChatMain = ({ username }) => {
                     </div>
                 ))}
             </div>
+
             <div className="flex w-[80%] items-center justify-between">
                 <textarea
                     className="flex-grow p-2 rounded text-gray-200 bg-white bg-opacity-5 backdrop-blur-xl focus:outline-none focus:ring-1 focus:ring-blue-900 appearance-none resize-none min-h-[3rem] max-h-[12rem] overflow-y-auto"
@@ -154,7 +156,6 @@ const ChatMain = ({ username }) => {
                     )}
                 </button>
             </div>
-
         </div>
     );
 };
