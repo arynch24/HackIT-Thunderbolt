@@ -48,6 +48,7 @@ const Sidebar = () => {
                                     }`}
                                 onClick={() => {
                                     dispatch(setActiveSession(session.id)); // Set the clicked session as active
+                                    dispatch(setChatMode(true));// Enable chat mode
                                 }}
                             >
                                 {/* Display the latest message or "New Chat" if no messages */}

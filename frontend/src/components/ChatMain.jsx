@@ -132,12 +132,23 @@ const ChatMain = () => {
                 {activeSession?.messages.map((message, index) => (
                     <div
                         key={index}
-                        className={`${message.sender === 'user' ? 'flex justify-end' : ''}`}
+                        className={`${message.sender === 'user' ? 'flex justify-end' : 'flex justify-start'}`}
                     >
+                        {message.sender !== 'user' && (
+                            <span>
+                                <img src="/chatbot.png" alt="Chatbot" className="h-7 mt-3 mr-2" />
+                            </span>
+                        )}
+
                         <div className={`p-2 rounded-lg mb-2 sm:w-2/3 ${message.sender === 'user' ? 'bg-white bg-opacity-5 backdrop-blur-xl text-right rounded-tr-none' : 'rounded-tl-none'}`}>
-                            <strong>{message.sender === 'user' ? 'You' : 'Langflow'}:</strong>
+                            <strong>{message.sender === 'user' ? firstName || 'You' : 'HackIT '}</strong>
                             <p dangerouslySetInnerHTML={{ __html: message.text }} />
                         </div>
+                        {message.sender === 'user' && (
+                            <span>
+                                <img src="/boy.png" alt="You" className="h-7 mt-0 ml-3" />
+                            </span>
+                        )}
                     </div>
                 ))}
             </div>
