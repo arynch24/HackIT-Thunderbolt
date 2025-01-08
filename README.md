@@ -1,4 +1,4 @@
-# Social Media Insights and Analysis: HackIt
+# HackIt: Social Media Insights and Analysis 
 
 This project is designed to generate insights and analyze social media data, focusing on metrics such as likes, comments, and shares across different types of posts. It helps identify trends and patterns to improve engagement strategies.
 
